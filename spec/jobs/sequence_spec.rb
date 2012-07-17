@@ -7,6 +7,7 @@ module Jobs
         Sequence.arrange("").should be_empty
       end
       it "should be a sequence consiting of a single job" do
+        pending
         Sequence.arrange("a =>").should eq ["a"]
       end
     end
