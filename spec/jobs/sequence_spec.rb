@@ -19,7 +19,7 @@ module Jobs
       end
       context "when job has a dependency" do
         it "should order jobs in right order" do
-          pending
+          pending "Jobs class needs to be refactored a litle"
           sequence = Sequence.new job_a, job_b, job_c
           sequence.ordered.should eq [job_a, job_c, job_b]
         end
