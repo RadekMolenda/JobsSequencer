@@ -17,5 +17,8 @@ module Jobs
       subject { job.has_dependency? }
       it { should be_false }
     end
+    it "should raise error when trying to create job dependent on itself" do
+      lambda { Job.new("a", Job.new("a")) }.should raise_error(JobsCantDependOnThemselvesError)
+    end
   end #Job
 end

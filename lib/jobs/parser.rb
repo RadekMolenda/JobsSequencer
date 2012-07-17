@@ -11,7 +11,11 @@ module Jobs
     private
     def parse_job string
       args = string.split("=>").map{ |e| e.delete(" ") }
-      Job.new *args
+      if args[1]
+        Job.new args[0], Job.new(args[1])
+      else
+        Job.new args[0]
+      end
     end
     def parse_jobs string
       string.split("\n").map{ |line| parse_job line }
