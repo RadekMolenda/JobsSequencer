@@ -14,9 +14,7 @@ module Jobs
       Job.new *args
     end
     def parse_jobs string
-      string.split("\n").map do |line|
-        parse_job line
-      end
+      string.split("\n").map{ |line| parse_job line }
     end
   end
 end

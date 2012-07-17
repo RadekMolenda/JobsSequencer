@@ -2,13 +2,27 @@ require 'spec_helper'
 
 module Jobs
   describe Sequence do
-    describe "#arrange" do
-      it "should be an empty sequence when there are no jobs" do
-        Sequence.arrange("").should be_empty
+    let(:job_a){ Job.new "a" }
+    let(:job_b){ Job.new "b", "c" }
+    let(:job_c){ Job.new "c" }
+    describe "#add" do
+      it "should add new job to sequence" do
+        sequence = Sequence.new
+        sequence.add job_a
+        sequence.jobs.map(&:name).should eq ["a"]
       end
-      it "should be a sequence consiting of a single job" do
-        pending
-        Sequence.arrange("a =>").should eq ["a"]
+    end
+    describe "#ordered" do
+      it "should be an array with right job order" do
+        sequence = Sequence.new job_a, job_c
+        sequence.ordered.should eq [job_a, job_c]
+      end
+      context "when job has a dependency" do
+        it "should order jobs in right order" do
+          pending
+          sequence = Sequence.new job_a, job_b, job_c
+          sequence.ordered.should eq [job_a, job_c, job_b]
+        end
       end
     end
   end #Sequencer
