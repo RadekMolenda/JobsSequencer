@@ -1,5 +1,5 @@
 module Jobs
-  class Sequencer
+  class Sequence
     def arrange jobs
       jobs
     end

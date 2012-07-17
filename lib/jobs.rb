@@ -1,1 +1,1 @@
-require 'jobs/sequencer'
+require 'jobs/sequence'
