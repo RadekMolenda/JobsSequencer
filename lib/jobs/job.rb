@@ -8,5 +8,8 @@ module Jobs
       !@dependency.nil?
     end
     attr_accessor :name, :dependency
+    def ==(obj)
+      obj.name == @name
+    end
   end
 end
