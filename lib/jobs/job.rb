@@ -5,16 +5,28 @@ module Jobs
     def initialize job_name = "", job_dependency = nil
       @name = job_name
       @dependency = job_dependency
-      if job_dependency
-        raise JobsCantDependOnThemselvesError if self == job_dependency
-      end
+      validate job_dependency
     end
+    attr_accessor :name, :dependency
     def has_dependency?
       !@dependency.nil?
     end
-    attr_accessor :name, :dependency
-    def ==(obj)
+    def dependency= obj
+      validate obj
+      @dependency = obj
+    end
+    def name= name
+      @name= name
+      validate dependency
+    end
+    def == obj
       obj.name == name
+    end
+    private
+    def validate obj
+      if obj
+        raise JobsCantDependOnThemselvesError if self == obj
+      end
     end
   end
 end

@@ -1,11 +1,15 @@
 module Jobs
+  class JobsCantHaveCircularDependenciesError < StandardError
+  end
   class Sequence
     def initialize *jobs
       @jobs = *jobs || []
+      validate
     end
     attr_reader :jobs
     def add job
       @jobs << job
+      validate
     end
     def ordered
       ordered_jobs = []
@@ -33,6 +37,23 @@ module Jobs
     def get_job jobs, job
       unless jobs.include? job
         job.has_dependency? ? get_job(jobs, job.dependency) : jobs.push(job)
+      end
+    end
+    def validate
+      @jobs.each do |job|
+        jobs = []
+        search jobs, job
+      end
+    end
+    def search jobs, job
+      jobs.push job
+      if job.has_dependency?
+        #check for circrular dependencies
+        if jobs.include? job.dependency
+          raise JobsCantHaveCircularDependenciesError
+        else
+          search jobs, job.dependency
+        end
       end
     end
   end

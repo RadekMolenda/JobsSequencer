@@ -41,6 +41,17 @@ module Jobs
         sequence.to_s.should eq "fead"
       end
     end
+    it "should raise error when trying to create job sequence with circular dependency" do
+      job_g = Job.new "g", job_c
+      job_c.dependency= job_g
+      lambda { Sequence.new job_c }.should raise_error(JobsCantHaveCircularDependenciesError)
+    end
+    it "should raise error when trying to add job that will create a circular dependency" do
+      job_g = Job.new "g", job_c
+      job_c.dependency= job_g
+      sequence = Sequence.new job_a
+      lambda { sequence.add job_c }.should raise_error(JobsCantHaveCircularDependenciesError)
+    end
   end #Sequence
   describe "On the beach challenge" do
     context "single job" do
