@@ -2,6 +2,7 @@ module Jobs
   class JobsCantHaveCircularDependenciesError < StandardError
   end
   class Sequence
+    include Enumerable
     def initialize *jobs
       @jobs = *jobs || []
       validate
@@ -24,8 +25,14 @@ module Jobs
       end
       ordered_jobs
     end
+    def each
+      @jobs.each
+    end
     def to_s
       ordered.map(&:name).join
+    end
+    def == sequence
+      ordered == sequence.ordered
     end
     private
     def add_job jobs, job

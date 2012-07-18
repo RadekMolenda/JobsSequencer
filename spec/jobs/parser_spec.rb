@@ -8,25 +8,24 @@ module Jobs
     it "should be nil when string argument is empty" do
       Parser.parse("").should be_nil
     end
-    it "should parse one job" do
-      parsed_jobs = Parser.parse("a =>")
-      parsed_jobs.should eq [job_a]
-      parsed_jobs.map(&:dependency).should eq [nil]
+    it "should create jobs sequence with one job" do
+      jobs_sequence = Parser.parse("a =>")
+      jobs_sequence.should eq Sequence.new(job_a)
+      jobs_sequence.map(&:dependency).should eq []
     end
-    it "should parse two jobs" do
-      parsed_jobs = Parser.parse("a =>\nb =>")
-      parsed_jobs.should eq [job_a, job_b]
+    it "should create jobs sequence with two jobs" do
+      jobs_sequence = Parser.parse("a =>\nb =>")
+      jobs_sequence.should eq Sequence.new job_a, job_b
     end
-    it "should parse one job with dependency" do
-      parsed_jobs = Parser.parse("a => b")
-      parsed_jobs.should eq [job_a]
-      parsed_jobs.map(&:dependency).should eq [job_b]
+    it "should create jobs sequence with one job with dependency" do
+      jobs_sequence = Parser.parse("a => b")
+      jobs_sequence.jobs.map(&:name).should eq ["a"]
+      jobs_sequence.jobs.first.dependency.name.should eq "b"
     end
     it "should parse two jobs with dependencies" do
-      parsed_jobs = Parser.parse("a => b\nb => c")
-      parsed_jobs.should eq [job_a, job_b]
-      parsed_jobs.map(&:dependency).should eq [job_b, job_c]
+      jobs_sequence = Parser.parse("a => b\nb => c")
+      jobs_sequence.jobs.map(&:name).should eq ["a", "b"]
+      jobs_sequence.jobs.map(&:dependency).map(&:name).should eq ["b", "c"]
     end
-
   end #Parser
 end
