@@ -14,24 +14,24 @@ module Jobs
       it "should add new job to sequence" do
         sequence = Sequence.new
         sequence.add job_a
-        sequence.jobs.map(&:name).should eq ["a"]
+        sequence.map(&:name).should eq ["a"]
       end
     end
     describe "#ordered" do
       it "should be an array with right job order" do
         sequence = Sequence.new job_a, job_c
-        sequence.ordered.should eq [job_a, job_c]
+        sequence.map(&:name).should eq ["a", "c"]
       end
       context "when job has a dependency" do
         it "should order jobs in right order" do
           sequence = Sequence.new job_a, job_b, job_c
-          sequence.ordered.should eq [job_a, job_c, job_b]
+          sequence.map(&:name).should eq ["a", "c", "b"]
         end
       end
       context "when jobs has dependencies" do
         it "should order jobs in right order" do
           sequence = Sequence.new job_d, job_e, job_f
-          sequence.ordered.should eq [job_f, job_e, job_d]
+          sequence.map(&:name).should eq ["f", "e", "d"]
         end
       end
     end
@@ -40,7 +40,7 @@ module Jobs
         sequence = Sequence.new job_d, job_e, job_f
         sequence.to_s.should eq "fed"
         sequence.add job_a
-        sequence.to_s.should eq "fead"
+        sequence.to_s.should eq "feda"
       end
     end
     it "should raise error when trying to create sequence with a circular dependency" do
@@ -97,7 +97,7 @@ module Jobs
       let(:job_e){ Job.new "e", "b" }
       it "should print 'afcbde'" do
         sequence = Sequence.new job_a, job_b, job_c, job_d, job_e, job_f
-        sequence.to_s.should eq "afcdbe"
+        sequence.to_s.should eq "afcbde"
       end
     end
   end

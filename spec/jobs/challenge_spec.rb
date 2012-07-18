@@ -35,7 +35,7 @@ module Jobs
     context "with six jobs (and some dependencies)" do
       it "should be a sequence in right order" do
         sequence = Parser.parse six_jobs
-        sequence.to_s.should eq "afcdbe"
+        sequence.to_s.should eq "afcbde"
       end
     end
     context "with job that has incorrect dependency" do
