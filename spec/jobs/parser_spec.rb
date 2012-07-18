@@ -12,7 +12,7 @@ module Jobs
     end
     it "should create jobs sequence with two jobs" do
       jobs_sequence = Parser.parse("a =>\nb =>")
-      jobs_sequence.jobs.map(&:name).should eq ["a", "b"]
+      jobs_sequence.map(&:name).should eq ["a", "b"]
     end
     it "should create jobs sequence with one job with dependency" do
       jobs_sequence = Parser.parse("a => b")

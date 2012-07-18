@@ -1,3 +1,5 @@
+#class Jobs::Parser
+#this class is responsible for parsing jobs from given strings
 module Jobs
   class Parser
     def parse string
@@ -14,11 +16,7 @@ module Jobs
       args[1] ? Job.new(args[0], args[1]) : Job.new(args[0])
     end
     def parse_jobs string
-      sequence = Sequence.new
-      string.split("\n").each{ |line|
-        sequence.add parse_job(line)
-      }
-      sequence
+      Sequence.new *string.split("\n").map{ |line| parse_job(line) }
     end
   end
 end

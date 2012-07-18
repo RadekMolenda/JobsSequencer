@@ -1,6 +1,6 @@
+#Job class
+#it is responsible for storing name and dependent job name
 module Jobs
-  class JobsCantDependOnThemselvesError < StandardError
-  end
   class Job
     def initialize job_name = "", job_dependency = nil
       @name = job_name
@@ -25,6 +25,8 @@ module Jobs
       end
     end
     private
+    #validation is performed each time the name or dependency name is changed
+    #it is performed on creation as well
     def validate obj
       raise JobsCantDependOnThemselvesError if self.name == obj
     end
