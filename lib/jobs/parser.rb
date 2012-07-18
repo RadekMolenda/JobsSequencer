@@ -1,7 +1,7 @@
 module Jobs
   class Parser
     def parse string
-      parse_jobs string unless string.empty?
+      parse_jobs string
     end
     def self.parse string
       new.parse string
@@ -11,9 +11,7 @@ module Jobs
     private
     def parse_job string
       args = string.split("=>").map{ |e| e.delete(" ") }
-      job = Job.new args[0]
-      job.dependency = args[1].nil? ? nil : Job.new(args[1])
-      job
+      args[1] ? Job.new(args[0], args[1]) : Job.new(args[0])
     end
     def parse_jobs string
       sequence = Sequence.new

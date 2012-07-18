@@ -20,13 +20,13 @@ module Jobs
       validate dependency
     end
     def == obj
-      obj.name == name
+      if obj.respond_to?(:name) and obj.respond_to?(:dependency)
+        @name == obj.name and obj.dependency == @dependency
+      end
     end
     private
     def validate obj
-      if obj
-        raise JobsCantDependOnThemselvesError if self == obj
-      end
+      raise JobsCantDependOnThemselvesError if self.name == obj
     end
   end
 end
