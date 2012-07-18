@@ -1,0 +1,9 @@
+===ENVIRONMENT===
+ruby1.9.3p194
+===RUN===
+bundle install
+bundle exec rspec spec
+
+Tests for challenge is located in spec/jobs/challenge_spec.rb
+
+run: 'bundle exec rspec spec/jobs/challenge_spec.rb'
