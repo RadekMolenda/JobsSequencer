@@ -1,3 +1,4 @@
+require 'jobs/errors'
 require 'jobs/job'
 require 'jobs/ordered_jobs'
 require 'jobs/sequence'
